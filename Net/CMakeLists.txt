@@ -11,8 +11,8 @@ POCO_HEADERS_AUTO( SRCS ${HDRS_G})
 
 # Version Resource
 if(MSVC AND NOT POCO_STATIC)
-    source_group("Resources" FILES ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
-    list(APPEND SRCS ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
+    source_group("Resources" FILES ${PROJECT_SOURCE_DIR}/DLLVersion.rc)
+    list(APPEND SRCS ${PROJECT_SOURCE_DIR}/DLLVersion.rc)
 endif()
 
 # Windows and WindowsCE need additional libraries
@@ -20,7 +20,7 @@ if(WIN32)
     if(WINCE)
         set(SYSLIBS ${SYSLIBS} "ws2.lib" "iphlpapi.lib")
     else()
-        set(SYSLIBS ${SYSLIBS} "ws2_32.lib" "iphlpapi.lib")
+        set(SYSLIBS ${SYSLIBS} "ws2_32.lib" "iphlpapi.lib" "advapi32.lib")
     endif()
 endif(WIN32)
 

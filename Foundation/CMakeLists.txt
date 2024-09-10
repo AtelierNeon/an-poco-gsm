@@ -28,8 +28,8 @@ endif()
 
 # Version Resource
 if(MSVC AND NOT POCO_STATIC)
-    source_group("Resources" FILES ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
-    list(APPEND SRCS ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
+    source_group("Resources" FILES ${PROJECT_SOURCE_DIR}/DLLVersion.rc)
+    list(APPEND SRCS ${PROJECT_SOURCE_DIR}/DLLVersion.rc)
 endif()
 
 # Messages
@@ -48,9 +48,19 @@ if (POCO_UNBUNDLED)
 		src/pcre_tables.c
 	)
 
-	find_package(ZLIB REQUIRED)
-	set(SYSLIBS ${SYSLIBS} ${ZLIB_LIBRARIES})
-	include_directories(${ZLIB_INCLUDE_DIRS})
+	if(POCO_WITH_SHARED_ZLIB)
+		set(ZLIB_USE_STATIC_LIBS OFF)
+	else()
+		set(ZLIB_USE_STATIC_LIBS ON)
+	endif()
+	find_package(SiblingZLIB)
+	if(NOT ZLIB_FOUND)
+		find_package(ZLIB REQUIRED)
+	endif()
+	if(ZLIB_FOUND)
+		set(SYSLIBS ${SYSLIBS} ${ZLIB_LIBRARIES})
+		include_directories(${ZLIB_INCLUDE_DIRS})
+	endif()
 
 	add_definitions(-DPOCO_UNBUNDLED)
 
@@ -101,7 +111,7 @@ else()
 endif (POCO_UNBUNDLED)
 
 if(WIN32)
-	set(SYSLIBS ${SYSLIBS} iphlpapi)
+	set(SYSLIBS ${SYSLIBS} iphlpapi advapi32)
 endif(WIN32)
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "SunPro")
 	set_target_properties( "${LIBNAME}" PROPERTIES LINK_FLAGS "-library=stlport4")
@@ -112,7 +122,9 @@ if(ANDROID)
 endif(ANDROID)
 
 # TODO: Why is this here?
-add_definitions( -DPCRE_STATIC)
+if(NOT POCO_UNBUNDLED)
+	add_definitions(-DPCRE_STATIC)
+endif()
 
 # For SetAffinity
 if(UNIX AND NOT APPLE)
