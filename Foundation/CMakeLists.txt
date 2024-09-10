@@ -38,9 +38,14 @@ POCO_MESSAGES( SRCS Logging src/pocomsg.mc)
 # If POCO_UNBUNDLED is enabled we try to find the required packages
 # The configuration will fail if the packages are not found
 if (POCO_UNBUNDLED)
-	find_package(PCRE REQUIRED)
-	set(SYSLIBS ${SYSLIBS} ${PCRE_LIBRARIES})
-	include_directories(${PCRE_INCLUDE_DIRS})
+	find_package(SiblingPCRE)
+	if(NOT PCRE_FOUND)
+		find_package(PCRE REQUIRED)
+	endif()
+	if(PCRE_FOUND)
+		set(SYSLIBS ${SYSLIBS} ${PCRE_LIBRARIES})
+		include_directories(${PCRE_INCLUDE_DIRS})
+	endif()
 
 	#HACK: Unicode.cpp requires functions from these files. The can't be taken from the library
 	POCO_SOURCES( SRCS RegExp
