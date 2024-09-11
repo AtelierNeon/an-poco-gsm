@@ -242,13 +242,15 @@ set(ConfigPackageLocation "lib/cmake/${PROJECT_NAME}")
 #    DESTINATION "lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}"
 #    )
 
-install(
-    FILES
-        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Config.cmake"
-        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}ConfigVersion.cmake"
-    DESTINATION "lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}"
-    COMPONENT Devel
-    )
+if(NOT POCO_WITHOUT_INSTALL_FILES AND NOT POCO_WITHOUT_INSTALL_ALL)
+    install(
+        FILES
+            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Config.cmake"
+            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}ConfigVersion.cmake"
+        DESTINATION "lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}"
+        COMPONENT Devel
+        )
+endif()
 
 endmacro()
 
@@ -261,24 +263,28 @@ endmacro()
 #           target_name             the name of the target. e.g. Foundation for PocoFoundation
 #    Example: POCO_INSTALL(Foundation)
 macro(POCO_INSTALL target_name)
-install(
-    DIRECTORY include/Poco
-    DESTINATION include
-    COMPONENT Devel
-    PATTERN ".svn" EXCLUDE
-    )
+if(NOT POCO_WITHOUT_INSTALL_HEADERS AND NOT POCO_WITHOUT_INSTALL_ALL)
+    install(
+        DIRECTORY include/Poco
+        DESTINATION include
+        COMPONENT Devel
+        PATTERN ".svn" EXCLUDE
+        )
+endif()
 
-install(
-    TARGETS "${target_name}" EXPORT "${target_name}Targets"
-    LIBRARY DESTINATION lib${LIB_SUFFIX}
-    ARCHIVE DESTINATION lib${LIB_SUFFIX}
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
-    )
+if(NOT POCO_WITHOUT_INSTALL_LIBRARIES AND NOT POCO_WITHOUT_INSTALL_ALL)
+    install(
+        TARGETS "${target_name}" EXPORT "${target_name}Targets"
+        LIBRARY DESTINATION lib${LIB_SUFFIX}
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+        )
 
-if (MSVC)
-# install the targets pdb
-  POCO_INSTALL_PDB(${target_name})
+    if (MSVC)
+    # install the targets pdb
+      POCO_INSTALL_PDB(${target_name})
+    endif()
 endif()
 
 endmacro()
