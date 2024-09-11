@@ -29,6 +29,10 @@ set(CMAKE_C_STANDARD 99)
 option(POCO_WITH_SHARED_LIBRARIES "Build shared version of the POCO libraries." OFF)
 option(POCO_WITH_SHARED_ZLIB "Build POCO with shared version of Zlib." OFF)
 option(POCO_WITHOUT_APPS "Build POCO without apps." OFF)
+option(POCO_WITHOUT_INSTALL_ALL "Build POCO without installing all artifacts." OFF)
+option(POCO_WITHOUT_INSTALL_FILES "Build POCO without installing files." OFF)
+option(POCO_WITHOUT_INSTALL_HEADERS "Build POCO without installing headers." OFF)
+option(POCO_WITHOUT_INSTALL_LIBRARIES "Build POCO without installing libraries." OFF)
 
 # Put the libaries and binaries that get built into directories at the
 # top of the build tree rather than in hard-to-find leaf
@@ -325,15 +329,17 @@ write_basic_package_version_file(
 )
 
 configure_file(cmake/${PROJECT_NAME}Config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake" @ONLY)
-install(
-    FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}ConfigVersion.cmake
-    DESTINATION
-        "lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}"
-    COMPONENT
-        Devel
-)
+if(NOT POCO_WITHOUT_INSTALL_FILES AND NOT POCO_WITHOUT_INSTALL_ALL)
+    install(
+        FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}ConfigVersion.cmake
+        DESTINATION
+            "lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}"
+        COMPONENT
+            Devel
+    )
+endif()
 
 # in tree build settings
 #configure_file(PocoBuildTreeSettings.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/PocoBuildTreeSettings.cmake @ONLY)
