@@ -137,6 +137,10 @@ if(MSVC)
       "Set to OFF|ON (default is OFF) to control parallel build of POCO with MSVC" OFF)
 endif()
 
+if(UNIX)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
 if(POCO_WITH_SHARED_LIBRARIES)
     set(POCO_STATIC OFF)
 else()
