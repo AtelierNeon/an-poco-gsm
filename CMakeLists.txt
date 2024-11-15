@@ -5,7 +5,6 @@ project(Poco)
 file(STRINGS "${PROJECT_SOURCE_DIR}/libversion" SHARED_LIBRARY_VERSION)
 # Read the version information from the VERSION file
 file(STRINGS "${PROJECT_SOURCE_DIR}/VERSION" PACKAGE_VERSION)
-message(STATUS "POCO package version: ${PACKAGE_VERSION}")
 string(REGEX REPLACE "([0-9]+)\\.[0-9]+\\.[0-9]+.*" "\\1" CPACK_PACKAGE_VERSION_MAJOR ${PACKAGE_VERSION})
 string(REGEX REPLACE "[0-9]+\\.([0-9]+)\\.[0-9]+.*" "\\1" CPACK_PACKAGE_VERSION_MINOR ${PACKAGE_VERSION})
 string(REGEX REPLACE "[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" CPACK_PACKAGE_VERSION_PATCH ${PACKAGE_VERSION})
@@ -62,17 +61,17 @@ endif()
 # Include some common macros to simpilfy the Poco CMake files
 include(PocoMacros)
 
-if(POCO_WITH_SHARED_LIBRARIES)
-	set(POCO_STATIC OFF)
-else()
-	set(POCO_STATIC ON)
-endif()
-
 if(POCO_STATIC)
 	message(WARNING "POCO_STATIC has been deprecated. Please use BUILD_SHARED_LIBS instead.")
 	option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 else()
 	option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+endif()
+
+if(POCO_WITH_SHARED_LIBRARIES)
+	set(BUILD_SHARED_LIBS ON)
+else()
+	set(BUILD_SHARED_LIBS OFF)
 endif()
 
 if(MSVC)
@@ -493,7 +492,7 @@ if(NOT POCO_WITHOUT_INSTALL_FILES AND NOT POCO_WITHOUT_INSTALL_ALL)
 	)
 endif()
 
-if(POCO_UNBUNDLED)
+if(POCO_UNBUNDLED AND NOT POCO_WITHOUT_INSTALL_FILES AND NOT POCO_WITHOUT_INSTALL_ALL)
 	install(FILES cmake/FindPCRE.cmake
 			DESTINATION "${PocoConfigPackageLocation}")
 	install(FILES cmake/V39/FindEXPAT.cmake
