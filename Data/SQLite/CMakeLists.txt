@@ -7,7 +7,10 @@ file(GLOB_RECURSE HDRS_G "include/*.h")
 POCO_HEADERS_AUTO(SQLITE_SRCS ${HDRS_G})
 
 if(POCO_UNBUNDLED)
-	find_package(SQLite3 REQUIRED)
+	find_package(SiblingSQLite3)
+	if(NOT SQLITE3_FOUND)
+		find_package(SQLite3 REQUIRED)
+	endif()
 else()
 	# sqlite3
 	POCO_SOURCES(SQLITE_SRCS sqlite3

@@ -20,7 +20,10 @@ endif()
 # If POCO_UNBUNDLED is enabled we try to find the required packages
 # The configuration will fail if the packages are not found
 if(POCO_UNBUNDLED)
-	find_package(EXPAT REQUIRED)
+	find_package(SiblingEXPAT)
+	if(NOT EXPAT_FOUND)
+		find_package(EXPAT REQUIRED)
+	endif()
 else()
 	POCO_SOURCES(SRCS expat
 		src/xmlparse.cpp

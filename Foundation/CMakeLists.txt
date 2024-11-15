@@ -35,8 +35,19 @@ POCO_MESSAGES(SRCS Logging src/pocomsg.mc)
 # If POCO_UNBUNDLED is enabled we try to find the required packages
 # The configuration will fail if the packages are not found
 if(POCO_UNBUNDLED)
-	find_package(PCRE REQUIRED)
-	find_package(ZLIB REQUIRED)
+	find_package(SiblingPCRE)
+	if(NOT PCRE_FOUND)
+		find_package(PCRE REQUIRED)
+	endif()
+	if(POCO_WITH_SHARED_ZLIB)
+		set(ZLIB_USE_STATIC_LIBS OFF)
+	else()
+		set(ZLIB_USE_STATIC_LIBS ON)
+	endif()
+	find_package(SiblingZLIB)
+	if(NOT ZLIB_FOUND)
+		find_package(ZLIB REQUIRED)
+	endif()
 
 	#HACK: Unicode.cpp requires functions from these files. The can't be taken from the library
 	POCO_SOURCES(SRCS RegExp
