@@ -23,6 +23,7 @@ set_target_properties(JSON
 )
 
 target_link_libraries(JSON PUBLIC Poco::Foundation)
+target_link_options(JSON PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/FORCE:MULTIPLE>)
 target_include_directories(JSON
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

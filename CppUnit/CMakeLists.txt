@@ -32,4 +32,8 @@ elseif(MINGW)
 	target_compile_definitions(CppUnit
 		PUBLIC
 			_DLL)
+elseif(WIN32)
+	target_compile_definitions(CppUnit
+		PUBLIC
+			POCO_DLL)
 endif()

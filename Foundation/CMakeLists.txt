@@ -144,11 +144,15 @@ if(NOT BUILD_SHARED_LIBS)
 		PUBLIC
 			POCO_STATIC
 	)
+elseif(WIN32)
+	target_compile_definitions(Foundation
+		PUBLIC
+			POCO_DLL)
 endif()
 
 if(WIN32)
 	target_compile_definitions(Foundation PUBLIC POCO_OS_FAMILY_WINDOWS UNICODE _UNICODE)
-	target_link_libraries(Foundation PUBLIC iphlpapi)
+	target_link_libraries(Foundation PUBLIC iphlpapi advapi32)
 endif()
 
 if(CYGWIN)

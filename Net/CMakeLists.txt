@@ -22,6 +22,7 @@ set_target_properties(Net
 )
 
 target_link_libraries(Net PUBLIC Poco::Foundation)
+target_link_options(Net PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/FORCE:MULTIPLE>)
 # Windows and WindowsCE need additional libraries
 if(WIN32)
 	target_link_libraries(Net PUBLIC "iphlpapi.lib")

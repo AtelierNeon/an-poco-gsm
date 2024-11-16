@@ -45,6 +45,7 @@ set_target_properties(XML
 )
 
 target_link_libraries(XML PUBLIC Poco::Foundation)
+target_link_options(XML PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/FORCE:MULTIPLE>)
 target_include_directories(XML
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

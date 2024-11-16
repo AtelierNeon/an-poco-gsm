@@ -22,6 +22,7 @@ set_target_properties(Crypto
 )
 
 target_link_libraries(Crypto PUBLIC Poco::Foundation OpenSSL::SSL OpenSSL::Crypto)
+target_link_options(Crypto PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/FORCE:MULTIPLE>)
 target_include_directories(Crypto
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -31,7 +32,7 @@ target_include_directories(Crypto
 )
 
 if(MSVC AND POCO_DISABLE_INTERNAL_OPENSSL)
-	target_compile_definitions(Crypto PUBLIC POCO_EXTERNAL_OPENSSL)
+	target_compile_definitions(Crypto PUBLIC POCO_EXTERNAL_OPENSSL=9)
 	if(OPENSSL_USE_STATIC_LIBS)
 		target_link_libraries(Crypto PUBLIC ws2_32.lib Crypt32.lib)
 	endif()
