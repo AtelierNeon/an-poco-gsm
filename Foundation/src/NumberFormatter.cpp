@@ -12,6 +12,11 @@
 //
 
 
+#if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
+
 #include "Poco/NumberFormatter.h"
 #include "Poco/MemoryStream.h"
 #include <iomanip>
@@ -31,26 +36,22 @@
 #endif
 
 
+
 namespace Poco {
 
 
 std::string NumberFormatter::format(bool value, BoolFormat format)
 {
-	switch(format)
+	switch (format)
 	{
-		default:
-		case FMT_TRUE_FALSE:
-			if (value == true)
-				return "true";
-			return "false";
-		case FMT_YES_NO:
-			if (value == true)
-				return "yes";
-			return "no";
-		case FMT_ON_OFF:
-			if (value == true)
-				return "on";
-			return "off";
+	case FMT_YES_NO:
+		return value ? "yes" : "no";
+
+	case FMT_ON_OFF:
+		return value ? "on" : "off";
+
+	default: // including FMT_TRUE_FALSE:
+		return value ? "true" : "false";
 	}
 }
 
@@ -476,9 +477,9 @@ void NumberFormatter::append(std::string& str, const void* ptr)
 {
 	char buffer[24];
 #if defined(POCO_PTR_IS_64_BIT)
-	std::sprintf(buffer, "%016" PRIXPTR, (UIntPtr) ptr);
+	std::snprintf(buffer, sizeof(buffer), "%016" PRIXPTR, (UIntPtr) ptr);
 #else
-	std::sprintf(buffer, "%08" PRIXPTR, (UIntPtr) ptr);
+	std::snprintf(buffer, sizeof(buffer), "%08" PRIXPTR, (UIntPtr) ptr);
 #endif
 	str.append(buffer);
 }

@@ -21,7 +21,8 @@ set_target_properties(Zip
 		DEFINE_SYMBOL Zip_EXPORTS
 )
 
-target_link_libraries(Zip PUBLIC Poco::Util Poco::XML)
+target_link_libraries(Zip PUBLIC Poco::Foundation)
+target_link_options(Zip PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/FORCE:MULTIPLE>)
 target_include_directories(Zip
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
