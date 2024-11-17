@@ -111,22 +111,21 @@ void TestCase::run(TestResult *result)
 	result->startTest(this);
 
 	setUp();
-	try 
+	try
 	{
 		runTest();
 	}
-	catch (CppUnitException& e) 
+	catch (CppUnitException& e)
 	{
 		CppUnitException* copy = new CppUnitException(e);
 		result->addFailure(this, copy);
 	}
 	catch (std::exception& e)
 	{
-		std::string msg(typeid(e).name());
+		std::string msg(TestResult::demangle(typeid(e).name()));
 		msg.append(": ");
 		msg.append(e.what());
 		result->addError(this, new CppUnitException(msg));
-
 	}
 	catch (...)
 	{

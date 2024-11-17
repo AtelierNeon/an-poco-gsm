@@ -9,7 +9,15 @@ POCO_HEADERS_AUTO(SRCS ${HDRS_G})
 # If POCO_UNBUNDLED is enabled we try to find the required packages
 # The configuration will fail if the packages are not found
 if(POCO_UNBUNDLED)
-	find_package(ZLIB REQUIRED)
+	if(POCO_WITH_SHARED_ZLIB)
+		set(ZLIB_USE_STATIC_LIBS OFF)
+	else()
+		set(ZLIB_USE_STATIC_LIBS ON)
+	endif()
+	find_package(SiblingZLIB)
+	if(NOT ZLIB_FOUND)
+		find_package(ZLIB REQUIRED)
+	endif()
 else()
 	# zlib
 	POCO_SOURCES(SRCS zlib

@@ -33,6 +33,19 @@ AbstractBinder::AbstractBinder()
 
 AbstractBinder::~AbstractBinder()
 {
+	if (_pStrings)
+	{
+		for (auto& s : *_pStrings)
+			delete s;
+	}
+}
+
+
+const std::string& AbstractBinder::toString(const UUID& uuid)
+{
+	if (!_pStrings) _pStrings.reset(new StringList);
+	_pStrings->push_back(new std::string(uuid.toString()));
+	return *_pStrings->back();
 }
 
 
@@ -399,6 +412,24 @@ void AbstractBinder::bind(std::size_t pos, const std::deque<Time>& val, Directio
 
 
 void AbstractBinder::bind(std::size_t pos, const std::list<Time>& val, Direction dir)
+{
+	throw NotImplementedException("std::list binder must be implemented.");
+}
+
+
+void AbstractBinder::bind(std::size_t pos, const std::vector<UUID>& val, Direction dir)
+{
+	throw NotImplementedException("std::vector binder must be implemented.");
+}
+
+
+void AbstractBinder::bind(std::size_t pos, const std::deque<UUID>& val, Direction dir)
+{
+	throw NotImplementedException("std::deque binder must be implemented.");
+}
+
+
+void AbstractBinder::bind(std::size_t pos, const std::list<UUID>& val, Direction dir)
 {
 	throw NotImplementedException("std::list binder must be implemented.");
 }

@@ -12,6 +12,11 @@
 //
 
 
+#if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
+
 #include "Poco/Util/SystemConfiguration.h"
 #include "Poco/Environment.h"
 #include "Poco/Path.h"
@@ -89,7 +94,7 @@ bool SystemConfiguration::getRaw(const std::string& key, std::string& value) con
 			Poco::Environment::NodeId id;
 			Poco::Environment::nodeId(id);
 			char result[13];
-			std::sprintf(result, "%02x%02x%02x%02x%02x%02x",
+			std::snprintf(result, sizeof(result), "%02x%02x%02x%02x%02x%02x",
 				id[0],
 				id[1],
 				id[2],
