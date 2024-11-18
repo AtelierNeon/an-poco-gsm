@@ -22,6 +22,7 @@ set_target_properties(CppParser
 )
 
 target_link_libraries(CppParser PUBLIC Poco::Foundation)
+target_link_options(CppParser PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/FORCE:MULTIPLE>)
 target_include_directories(CppParser
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

@@ -10,10 +10,12 @@ set_target_properties(EncodingsCompiler
 
 target_link_libraries(EncodingsCompiler PUBLIC Poco::Net Poco::Util)
 
-install(
-	TARGETS EncodingsCompiler EXPORT "EncodingsCompilerTargets"
-	LIBRARY DESTINATION lib${LIB_SUFFIX}
-	ARCHIVE DESTINATION lib${LIB_SUFFIX}
-	RUNTIME DESTINATION bin
-	INCLUDES DESTINATION include
-)
+if(NOT POCO_WITHOUT_INSTALL_FILES AND NOT POCO_WITHOUT_INSTALL_ALL)
+	install(
+		TARGETS EncodingsCompiler EXPORT "EncodingsCompilerTargets"
+		LIBRARY DESTINATION lib${LIB_SUFFIX}
+		ARCHIVE DESTINATION lib${LIB_SUFFIX}
+		RUNTIME DESTINATION bin
+		INCLUDES DESTINATION include
+	)
+endif()
