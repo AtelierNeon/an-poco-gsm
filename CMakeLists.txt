@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.5.0...3.15)
 
 project(Poco)
 
@@ -97,7 +97,7 @@ if(MSVC)
 	endif()
 endif()
 
-option(ENABLE_NETSSL_WIN "Enable NetSSL Windows" OFF)
+option(ENABLE_NETSSL_WIN "Enable NetSSL Windows" ON)
 option(FORCE_OPENSSL "Force usage of OpenSSL even under windows" OFF)
 
 if(ENABLE_CRYPTO OR ENABLE_NETSSL OR ENABLE_JWT)
@@ -196,7 +196,7 @@ option(ENABLE_NET "Enable Net" ON)
 
 option(ENABLE_SEVENZIP "Enable SevenZip" ON)
 option(ENABLE_ZIP "Enable Zip" ON)
-option(ENABLE_CPPPARSER "Enable C++ parser" OFF)
+option(ENABLE_CPPPARSER "Enable C++ parser" ON)
 option(ENABLE_POCODOC "Enable Poco Documentation Generator" OFF)
 option(ENABLE_PAGECOMPILER "Enable PageCompiler" ON)
 option(ENABLE_PAGECOMPILER_FILE2PAGE "Enable File2Page" ON)
