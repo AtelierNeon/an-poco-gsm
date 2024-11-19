@@ -229,7 +229,7 @@ else()
 endif()
 
 if(UNIX)
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
 # Disable fork exec
