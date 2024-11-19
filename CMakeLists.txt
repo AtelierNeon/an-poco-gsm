@@ -221,6 +221,10 @@ else()
 	message(STATUS "Using internal sqlite, zlib, pcre, expat, ...")
 endif()
 
+if(UNIX)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
 include(DefinePlatformSpecifc)
 
 # Collect the built libraries and include dirs, the will be used to create the PocoConfig.cmake file
