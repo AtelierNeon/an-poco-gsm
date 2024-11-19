@@ -228,6 +228,10 @@ else()
 	message(STATUS "Using internal sqlite, zlib, pcre, expat, ...")
 endif()
 
+if(UNIX)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
 # Disable fork exec
 option(POCO_NO_FORK_EXEC "Set to OFF|ON (default is OFF) to disable use of fork() and exec*() which are not allowed on some Apple platforms (iOS, watchOS, iPadOS, tvOS)." OFF)
 
